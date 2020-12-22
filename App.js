@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
 import {
   SafeAreaView,
@@ -15,47 +7,33 @@ import {
   Text,
   StatusBar,
   Button,
+  Dimensions,
 } from 'react-native';
 import 'react-native-gesture-handler';
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import { createDrawerNavigator , useIsDrawerOpen} from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
-function HomeScreen({ navigation }) {
+import {createDrawerNavigator, useIsDrawerOpen} from '@react-navigation/drawer';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
-  return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button
-            onPress={() => navigation.navigate('Notifications')}
+import MapStackScreen from './app/component/MapStackScreen/MapStackScreen';
 
-            title="Go to notifications"
-        />
-      </View>
-  );
-}
+import UserInfoStackScreen from './app/component/UserInfoStackScreen/UserInfoStackScreen';
 
-function NotificationsScreen({ navigation }) {
-  return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button onPress={() => navigation.goBack()} title="Go back home" />
-      </View>
-  );
-}
+import ShareLocationStackScreen from './app/component/ShareScreenStack/ShareLocationStackScreen';
 
 const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-      <NavigationContainer>
-        <Drawer.Navigator initialRouteName="Home">
-          <Drawer.Screen name="Home" component={HomeScreen} />
-          <Drawer.Screen name="Notifications" component={NotificationsScreen} />
-        </Drawer.Navigator>
-      </NavigationContainer>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Map" component={MapStackScreen} />
+        {/*<Stack.Screen name="Comments" component={CommentScreen} />*/}
+        <Tab.Screen name="Share" component={ShareLocationStackScreen} />
+        <Tab.Screen name="User Info" component={UserInfoStackScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
