@@ -117,8 +117,8 @@ function MapScreen({navigation}) {
   const [region, setLag] = useState({
     latitude: 33.33333,
     longitude: -144.01234,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
+    latitudeDelta: 0.0522,
+    longitudeDelta: 0.0521,
   });
 
   const mapIndex = 0;
@@ -295,7 +295,7 @@ function MapScreen({navigation}) {
           autoCapitalize="none"
           style={{flex: 1, padding: 0}}
         />
-        <Button title="sdfa" style={{size: 10}}>
+        <Button title="Search" style={{size: 10}}>
           {' '}
         </Button>
         {/*<Ionicons name="ios-search" size={20} />*/}

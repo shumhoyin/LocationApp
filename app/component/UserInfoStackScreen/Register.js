@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
@@ -23,7 +15,8 @@ import {
 } from 'react-native';
 import 'react-native-gesture-handler';
 var {height, width} = Dimensions.get('window');
-
+import {connect} from 'react-redux';
+import {registerUserRequest} from '../../redux';
 const styles = StyleSheet.create({
   UserIcon: {
     width: 150,
@@ -33,25 +26,24 @@ const styles = StyleSheet.create({
   },
 });
 
-function Register({navigation}) {
-  const [UserFirstName, onUserFirstNameChange] = useState(null);
-  const [UserLastName, onUserLastNameChange] = useState(null);
-  const [UserName, onUserNameChange] = useState(null);
+function Register(props) {
+  const [UserObj, setUserObj] = useState({
+    firstName: '',
+    lastName: '',
+    userName: '',
+    userPassword: '',
+    reEnteredPassword: '',
+    email: '',
+  });
 
-  const [UserPassword, onUserPasswordChange] = useState(null);
-  const [ReUserPassword, onReUserPasswordChange] = useState(null);
-  const [UserEmail, onUserEmailChange] = useState(null);
+  //for checking only
+  useEffect(() => {
+    console.log(JSON.stringify(props));
+  }, []);
 
   const goConfirmPage = () => {
-    let UserObj = {
-      firstName: UserFirstName,
-      lastName: UserLastName,
-      username: UserName,
-      hashedPassword: UserPassword,
-      email: UserEmail,
-    };
     console.log(UserObj);
-    navigation.navigate('ConfirmPage', UserObj);
+    props.navigation.navigate('ConfirmPage', UserObj);
   };
 
   return (
@@ -60,49 +52,51 @@ function Register({navigation}) {
         <Text>First Name :</Text>
         <TextInput
           style={{height: 40, borderColor: 'black', borderWidth: 1}}
-          onChangeText={(text) => onUserFirstNameChange(text)}
-          value={UserFirstName}
+          onChangeText={(text) => setUserObj({...UserObj, firstName: text})}
+          value={UserObj.firstName}
         />
 
         <Text>Last Name :</Text>
         <TextInput
           style={{height: 40, borderColor: 'black', borderWidth: 1}}
-          onChangeText={(text) => onUserLastNameChange(text)}
-          value={UserLastName}
+          onChangeText={(text) => setUserObj({...UserObj, lastName: text})}
+          value={UserObj.lastName}
         />
-        <Text>{UserLastName}</Text>
+        <Text>{UserObj.lastName}</Text>
 
         <Text>UserName :</Text>
         <TextInput
           style={{height: 40, borderColor: 'black', borderWidth: 1}}
-          onChangeText={(text) => onUserNameChange(text)}
-          value={UserName}
+          onChangeText={(text) => setUserObj({...UserObj, userName: text})}
+          value={UserObj.userName}
         />
-        <Text stykle={{marginBottom: 20}}>{UserName}</Text>
+        <Text stykle={{marginBottom: 20}}>{UserObj.userName}</Text>
 
         <Text>Password :</Text>
         <TextInput
           style={{height: 40, borderColor: 'black', borderWidth: 1}}
-          onChangeText={(text) => onUserPasswordChange(text)}
-          value={UserPassword}
+          onChangeText={(text) => setUserObj({...UserObj, userPassword: text})}
+          value={UserObj.userPassword}
         />
-        <Text>{UserPassword}</Text>
+        <Text>{UserObj.userPassword}</Text>
 
         <Text>Re Enter Password :</Text>
         <TextInput
           style={{height: 40, borderColor: 'black', borderWidth: 1}}
-          onChangeText={(text) => onReUserPasswordChange(text)}
-          value={ReUserPassword}
+          onChangeText={(text) =>
+            setUserObj({...UserObj, reEnteredPassword: text})
+          }
+          value={UserObj.reEnteredPassword}
         />
-        <Text>{ReUserPassword}</Text>
+        <Text>{UserObj.reEnteredPassword}</Text>
 
         <Text>E-mail :</Text>
         <TextInput
           style={{height: 40, borderColor: 'black', borderWidth: 1}}
-          onChangeText={(text) => onUserEmailChange(text)}
-          value={UserEmail}
+          onChangeText={(text) => setUserObj({...UserObj, email: text})}
+          value={UserObj.email}
         />
-        <Text>{UserEmail}</Text>
+        <Text>{UserObj.email}</Text>
 
         {/*doing validation */}
         <TouchableOpacity onPress={goConfirmPage}>
@@ -113,9 +107,31 @@ function Register({navigation}) {
             Next Step
           </Text>
         </TouchableOpacity>
+
+        {/*test redux implementation */}
+        <TouchableOpacity onPress={() => props.registerUserRequest(UserObj)}>
+          <Text
+            style={{
+              fontSize: 20,
+            }}>
+            test
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-export default Register;
+const mapStateToProps = (state) => {
+  return {
+    data: state.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    registerUserRequest: (UserObj) => dispatch(registerUserRequest(UserObj)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
