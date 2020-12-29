@@ -6,11 +6,25 @@ import {
 
 import axios from 'axios';
 
-export const registerUserRequest = (UserObj) => {
+export const registerUserRequest = (UserObj, successCallback) => {
   console.log('inside register user request');
   console.log(UserObj);
+
+  //simluate register user
+  axios
+    .post('http://localhost:3001/api/User/UserRegister', UserObj)
+    .then((response) => {
+      console.log(response.data);
+      if (typeof successCallback === 'function') {
+        successCallback();
+      }
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+
   return {
     type: REGISTER_USER_REQUEST,
-    payload: UserObj,
+    payload: '',
   };
 };

@@ -31,29 +31,18 @@ const styles = StyleSheet.create({
 function ConfirmPage(props) {
   const [UserObj, setUser] = useState(props.route.params);
 
-  //action to submit this form ==> will be handled by redux
-  const ConfirmInfo = () => {
-    console.log('In Confirm Page :' + JSON.stringify(UserObj));
-    // let ReturnResult = axios
-    //   .post('http://localhost:3000/api/User/UserRegister', UserObj)
-    //   .then((res) => {
-    //     console.log(typeof res.data.resCode);
-    //
-    //     res.data.resCode === 1
-    //       ? Alert.alert(
-    //           'Register Result',
-    //           'Success',
-    //           [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-    //           {cancelable: false},
-    //         )
-    //       : Alert.alert(
-    //           'Register Result',
-    //           'Fail',
-    //           [{text: 'OK', onPress: () => props.navigation.goBack()}],
-    //           {cancelable: false},
-    //         );
-    //   });
+  //action to submit this form ==> will be handled by redux (registerUserRequest)
+
+  //this fucnction will be activated if register user is success
+
+  const successCallback = () => {
+    props.navigation.navigate('RegisterSuccessScreen');
   };
+
+  const failureCallback = () => {
+    alert();
+  };
+
   return (
     <View style={{flex: 1}}>
       <Text>Confirm Your Information</Text>
@@ -76,7 +65,8 @@ function ConfirmPage(props) {
             </Text>
           </TouchableOpacity>
           {/*doing validation */}
-          <TouchableOpacity onPress={ConfirmInfo}>
+          <TouchableOpacity
+            onPress={() => props.registerUserRequest(UserObj, successCallback)}>
             <Text
               style={{
                 fontSize: 20,
@@ -98,7 +88,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    registerUserRequest: (UserObj) => dispatch(registerUserRequest(UserObj)),
+    registerUserRequest: (UserObj, successCallback) =>
+      dispatch(registerUserRequest(UserObj, successCallback)),
   };
 };
 

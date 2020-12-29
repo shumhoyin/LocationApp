@@ -16,6 +16,7 @@ import {
 import 'react-native-gesture-handler';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+
 var {height, width} = Dimensions.get('window');
 
 const CARD_HEIGHT = 220;
@@ -210,15 +211,15 @@ function MapScreen({navigation}) {
     );
   };
 
-  const StopChange = () => {
-    useEffect(() => {
-      setLag({
-        ...region,
-        latitude: currentLocation.coords.latitude,
-        longitude: currentLocation.coords.longitude,
-      });
-    }, []);
-  };
+  // const StopChange = () => {
+  //   useEffect(() => {
+  //     setLag({
+  //       ...region,
+  //       latitude: currentLocation.coords.latitude,
+  //       longitude: currentLocation.coords.longitude,
+  //     });
+  //   }, []);
+  // };
 
   //for the marker animation
   const interpolations = coordinates.map((marker, idx) => {

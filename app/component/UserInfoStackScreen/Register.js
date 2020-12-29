@@ -36,11 +36,6 @@ function Register(props) {
     email: '',
   });
 
-  //for checking only
-  useEffect(() => {
-    console.log(JSON.stringify(props));
-  }, []);
-
   const goConfirmPage = () => {
     console.log(UserObj);
     props.navigation.navigate('ConfirmPage', UserObj);
@@ -109,14 +104,14 @@ function Register(props) {
         </TouchableOpacity>
 
         {/*test redux implementation */}
-        <TouchableOpacity onPress={() => props.registerUserRequest(UserObj)}>
-          <Text
-            style={{
-              fontSize: 20,
-            }}>
-            test
-          </Text>
-        </TouchableOpacity>
+        {/*<TouchableOpacity onPress={() => props.registerUserRequest(UserObj)}>*/}
+        {/*  <Text*/}
+        {/*    style={{*/}
+        {/*      fontSize: 20,*/}
+        {/*    }}>*/}
+        {/*    test*/}
+        {/*  </Text>*/}
+        {/*</TouchableOpacity>*/}
       </View>
     </View>
   );

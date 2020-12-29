@@ -8,7 +8,7 @@ const initialsState = {
   //for the loading spinner -- default : false
   loading: false,
   //for saving user info after user login
-  user: {},
+  user: null,
   //for error message
   errorMsg: 'this is default error msg',
   token: '',
@@ -19,6 +19,7 @@ const userReducer = (state = initialsState, action) => {
   switch (action.type) {
     case REGISTER_USER_REQUEST:
       console.log('inside userReducer');
+
       return {
         ...state,
         //set loading spinner state to true
