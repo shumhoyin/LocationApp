@@ -1,1 +1,5 @@
-export {registerUserRequest} from './action/userActions';
+export {
+  registerUserRequest,
+  loginUserRequest,
+  logoutUserRequest,
+} from './action/userActions';

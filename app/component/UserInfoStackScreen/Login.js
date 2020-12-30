@@ -23,6 +23,8 @@ import {
 } from 'react-native';
 import 'react-native-gesture-handler';
 var {height, width} = Dimensions.get('window');
+import {connect} from 'react-redux';
+import {loginUserRequest} from '../../redux';
 
 const styles = StyleSheet.create({
   UserIcon: {
@@ -33,17 +35,16 @@ const styles = StyleSheet.create({
   },
 });
 
-function Login({navigation}) {
-  const [UserName, onUserNameChange] = useState(null);
-  const [UserPassword, onUserPasswordChange] = useState(null);
+function Login(props) {
+  const [UserObj, setUserObj] = useState({userName: '', userPassword: ''});
 
-  const LoginSubmit = () => {
-    const UserObj = {
-      username: UserName,
-      hashedPassword: UserPassword,
-    };
+  const successCallback = () => {
+    console.log('123 success');
+    props.navigation.navigate('Map');
+  };
 
-    console.log(UserObj);
+  const FailureCallback = () => {
+    console.log('123 failure');
   };
 
   return (
@@ -52,21 +53,24 @@ function Login({navigation}) {
         <Text>UserName :</Text>
         <TextInput
           style={{height: 40, borderColor: 'black', borderWidth: 1}}
-          onChangeText={(text) => onUserNameChange(text)}
-          value={UserName}
+          onChangeText={(text) => setUserObj({...UserObj, userName: text})}
+          value={UserObj.userName}
         />
-        <Text stykle={{marginBottom: 20}}>{UserName}</Text>
+        <Text stykle={{marginBottom: 20}}>{UserObj.userName}</Text>
 
         <Text>Password :</Text>
         <TextInput
           style={{height: 40, borderColor: 'black', borderWidth: 1}}
-          onChangeText={(text) => onUserPasswordChange(text)}
-          value={UserPassword}
+          onChangeText={(text) => setUserObj({...UserObj, userPassword: text})}
+          value={UserObj.userPassword}
         />
-        <Text>{UserPassword}</Text>
+        <Text>{UserObj.userPassword}</Text>
 
         {/*doing validation */}
-        <TouchableOpacity onPress={LoginSubmit}>
+        <TouchableOpacity
+          onPress={() =>
+            props.loginUserRequest(UserObj, successCallback, FailureCallback)
+          }>
           <Text
             style={{
               fontSize: 20,
@@ -79,4 +83,11 @@ function Login({navigation}) {
   );
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginUserRequest: (UserObj, successCallback, FailureCallback) =>
+      dispatch(loginUserRequest(UserObj, successCallback, FailureCallback)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Login);

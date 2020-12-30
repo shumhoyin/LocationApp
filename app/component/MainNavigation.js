@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import 'react-native-gesture-handler';
 import {createDrawerNavigator, useIsDrawerOpen} from '@react-navigation/drawer';
@@ -10,6 +10,7 @@ import {Provider, connect} from 'react-redux';
 import MapStackScreen from './MapStackScreen/MapStackScreen';
 
 import UserInfoStackScreen from './UserInfoStackScreen/UserInfoStackScreen';
+import UserDetailScreen from './UserInfoStackScreen/UserDetailScreen';
 
 import ShareLocationStackScreen from './ShareScreenStack/ShareLocationStackScreen';
 
@@ -27,7 +28,10 @@ function MainNavigation(props) {
             props.data.user ? ShareLocationStackScreen : UserInfoStackScreen
           }
         />
-        <Tab.Screen name="User Info" component={UserInfoStackScreen} />
+        <Tab.Screen
+          name="User Info"
+          component={props.data.user ? UserDetailScreen : UserInfoStackScreen}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
