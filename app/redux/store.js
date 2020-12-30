@@ -6,7 +6,6 @@ import rootReducer from './rootReducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import userReducer from './reducer/userReducer';
 
-env = __DEV__;
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(logger, thunk)),
