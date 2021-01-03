@@ -5,7 +5,7 @@ import {createDrawerNavigator, useIsDrawerOpen} from '@react-navigation/drawer';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Provider, connect} from 'react-redux';
+import {Provider, connect,useSelector,useDispatch} from 'react-redux';
 
 import MapStackScreen from './MapStackScreen/MapStackScreen';
 
@@ -16,7 +16,9 @@ import ShareLocationStackScreen from './ShareScreenStack/ShareLocationStackScree
 
 const Tab = createBottomTabNavigator();
 
-function MainNavigation(props) {
+function MainNavigation() {
+    const data = useSelector(state =>state.user.user);
+    const dispatch = useDispatch();
   return (
     <NavigationContainer>
       <Tab.Navigator>
@@ -25,21 +27,16 @@ function MainNavigation(props) {
         <Tab.Screen
           name="Share"
           component={
-            props.data.user ? ShareLocationStackScreen : UserInfoStackScreen
+            data ? ShareLocationStackScreen : UserInfoStackScreen
           }
         />
         <Tab.Screen
           name="User Info"
-          component={props.data.user ? UserDetailScreen : UserInfoStackScreen}
+          component={data? UserDetailScreen : UserInfoStackScreen}
         />
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    data: state.user,
-  };
-};
-export default connect(mapStateToProps, null)(MainNavigation);
+export default MainNavigation;

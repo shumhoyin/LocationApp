@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import 'react-native-gesture-handler';
-import {connect} from 'react-redux';
+import {connect,useDispatch,useSelector} from 'react-redux';
 import axios from 'axios';
 import {logoutUserRequest} from '../../redux';
 var {height, width} = Dimensions.get('window');
@@ -28,31 +28,25 @@ const styles = StyleSheet.create({
   },
 });
 
-function UserDetailScreen(props) {
+function UserDetailScreen() {
+  const data = useSelector(state=>state.user.user)
+  const dispatch = useDispatch();
   return (
-    <View style={{flex: 1}}>
-      <View style={{flex: 3, backgroundColor: 'steelblue'}}>
-        <Text>UserFirstName = {props.data.firstName}</Text>
-        <Text>UserLastName = {props.data.lastName}</Text>
-        <Text>Email = {props.data.email}</Text>
-        <TouchableOpacity onPress={() => props.logoutUserRequest()}>
+    <View>
+        <SafeAreaView>
+        <Text>UserFirstName = {data.firstName}</Text>
+        <Text>UserLastName = {data.lastName}</Text>
+        <Text>Email = {data.email}</Text>
+        <TouchableOpacity onPress={()=>dispatch(logoutUserRequest())}>
           <Text>LOGOUT</Text>
         </TouchableOpacity>
-      </View>
+        </SafeAreaView>
     </View>
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    data: state.user.user,
-  };
-};
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    logoutUserRequest: () => dispatch(logoutUserRequest()),
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserDetailScreen);
+
+
+export default UserDetailScreen;
