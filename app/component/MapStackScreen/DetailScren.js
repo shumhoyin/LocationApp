@@ -57,13 +57,17 @@ const styles = StyleSheet.create({
   },
 });
 
-function DetailScreen({navigation}) {
+function DetailScreen(props) {
   const [defaultPlaceImage, setPlaceImage] = useState(null);
 
   const [comment, setComment] = useState(samplecomment);
-  console.log(comment);
+  // console.log(JSON.stringify(props.route.params));
 
   Alert.alert('This is Sample Page');
+
+  useEffect(() => {
+    console.log(props.route.params);
+  }, []);
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
@@ -74,9 +78,9 @@ function DetailScreen({navigation}) {
               flex: 1,
               width: undefined,
               height: undefined,
-              borderRadius: 20,
+              borderRadius: 15,
             }}
-            source={require('../../assets/images/PlacesImage/DefaultplaceImage.png')}
+            source={{uri: 'http://localhost:3001/locationImg/test.jpg'}}
           />
         </View>
         {/*Place Info Field    ----> using api to fetch data later*/}

@@ -16,6 +16,7 @@ import {
 import 'react-native-gesture-handler';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import axios from 'axios';
 
 var {height, width} = Dimensions.get('window');
 
@@ -128,35 +129,30 @@ function MapScreen({navigation}) {
   //sample data fo marker
   const [coordinates, setCooordinates] = useState([
     {
-      id: 1,
       title: 'Burger',
       latitude: 37.8025259,
       longitude: -122.4351431,
       image: require('../../assets/images/samplephoto/testphoto1.jpg'),
     },
     {
-      id: 2,
       title: 'Pizza',
       latitude: 37.7946386,
       longitude: -122.421646,
       image: require('../../assets/images/samplephoto/testphoto2.jpg'),
     },
     {
-      id: 3,
       title: 'Soup',
       latitude: 37.7665948,
       longitude: -122.4165628,
       image: require('../../assets/images/samplephoto/testphoto3.jpg'),
     },
     {
-      id: 4,
       title: 'Sushi',
       latitude: 37.7834153,
       longitude: -122.4527787,
       image: require('../../assets/images/samplephoto/testphoto4.jpg'),
     },
     {
-      id: 5,
       title: 'Curry',
       latitude: 37.79489,
       longitude: -122.4596065,
@@ -183,42 +179,18 @@ function MapScreen({navigation}) {
     );
   }, []);
 
-  const CheckLocation = () => {
-    setInterval(() => {
-      Geolocation.getCurrentPosition(
-        (currentLocation) => {
-          console.log(currentLocation.coords);
-          alert(currentLocation.coords);
-        },
-        (error) => console.log(error),
-        {enableHighAccuracy: true},
-      );
-      return () => {};
-    }, 10000);
-  };
-
-  const UpdateLocation = () => {
-    Geolocation.getCurrentPosition(
-      (currentLocation) => {
-        console.log(currentLocation.coords);
-        // setLag(...region, {
-        //   latitude: currentLocation.coords.latitude,
-        //   longitude: currentLocation.coords.longitude,
-        // });
-      },
-      (error) => console.log(error),
-      {enableHighAccuracy: true},
-    );
-  };
-
-  // const StopChange = () => {
-  //   useEffect(() => {
-  //     setLag({
-  //       ...region,
-  //       latitude: currentLocation.coords.latitude,
-  //       longitude: currentLocation.coords.longitude,
-  //     });
-  //   }, []);
+  // const CheckLocation = () => {
+  //   setInterval(() => {
+  //     Geolocation.getCurrentPosition(
+  //       (currentLocation) => {
+  //         console.log(currentLocation.coords);
+  //         alert(currentLocation.coords);
+  //       },
+  //       (error) => console.log(error),
+  //       {enableHighAccuracy: true},
+  //     );
+  //     return () => {};
+  //   }, 10000);
   // };
 
   //for the marker animation
@@ -249,6 +221,17 @@ function MapScreen({navigation}) {
   const _map = useRef(null);
   const _scrollView = useRef(null);
 
+  const testSubmit =() =>{
+    console.log('inside search');
+    axios.get('http://localhost:3001/api/Location/GetAll')
+        .then(res=>{
+          console.log(res.data.payload);
+        })
+        .catch(err=>{
+          console.log(err.message);
+        })
+  }
+
   return (
     <View>
       <MapView
@@ -262,8 +245,9 @@ function MapScreen({navigation}) {
         onPress={(e) => {
           console.log(e.nativeEvent.coordinate);
         }}
-        maxZoomLevel={50}>
-        {coordinates.map((item, index) => {
+        maxZoomLevel={20}>
+        {
+          coordinates.map((item, index) => {
           const scaleStyle = {
             transform: [
               {
@@ -296,12 +280,13 @@ function MapScreen({navigation}) {
           autoCapitalize="none"
           style={{flex: 1, padding: 0}}
         />
-        <Button title="Search" style={{size: 10}}>
+        <Button title="Search" style={{size: 10}} onPress={()=>testSubmit()}>
           {' '}
         </Button>
         {/*<Ionicons name="ios-search" size={20} />*/}
       </View>
-      {coordinates && (
+      {
+        coordinates && (
         <Animated.ScrollView
           ref={_scrollView}
           horizontal
@@ -329,7 +314,8 @@ function MapScreen({navigation}) {
             ],
             {useNativeDriver: true},
           )}>
-          {coordinates.map((item, idx) => (
+          {
+            coordinates.map((item, idx) => (
             <View style={styles.card} key={idx}>
               <Image
                 source={item.image}
@@ -350,7 +336,7 @@ function MapScreen({navigation}) {
                   <TouchableOpacity
                     style={styles.signIn}
                     onPress={() => {
-                      navigation.navigate('DetailScreen');
+                      navigation.navigate('DetailScreen', {name: 'test'});
                     }}>
                     <Text style={styles.textSign}> Understand more </Text>
                   </TouchableOpacity>
