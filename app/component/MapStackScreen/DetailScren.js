@@ -15,8 +15,10 @@ import {
 import 'react-native-gesture-handler';
 import StarImage from '../../assets/images/PlacesImage/star.png';
 import {Rating, AirbnbRating} from 'react-native-ratings';
+import {useSelector,useDispatch} from 'react-redux';
 
 import samplecomment from '../../assets/sampleComments/MOCK_DATA.json';
+import axios from 'axios';
 
 const styles = StyleSheet.create({
   ImageViewStyle: {
@@ -58,20 +60,28 @@ const styles = StyleSheet.create({
 });
 
 function DetailScreen(props) {
+  const data = useSelector(state =>state.user.user);
   const [defaultPlaceImage, setPlaceImage] = useState(null);
 
   const [comment, setComment] = useState(samplecomment);
-  // console.log(JSON.stringify(props.route.params));
 
-  Alert.alert('This is Sample Page');
 
-  useEffect(() => {
-    console.log(props.route.params);
-  }, []);
+  //this method .. need to think think
+  // console.log("inside deatil screen");
+  // console.log(props.route.params.detailId)
+  // axios.get('http://localhost:3001/api/Location/GetDetail')
+  //     .then(res=>{
+  //       console.log(res.data.payload);
+  //     })
+  //     .catch(err=>{
+  //       console.log(err.message);
+  //     })
+  //
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
-        {/*PlaceImage Field    ----> using api to fetch data later*/}
+
         <View style={styles.ImageViewStyle}>
           <Image
             style={{
@@ -126,7 +136,12 @@ function DetailScreen(props) {
 
         <TouchableHighlight
           onPress={() => {
-            alert('hello');
+
+              data ?
+                  props.navigation.navigate('CommentScreen',{detailId:props.route.params.detailId})
+                  :
+                  props.navigation.navigate('UserInfo')
+
           }}>
           <View style={styles.CommentsButton}>
             <Text>Give Your Comments</Text>
