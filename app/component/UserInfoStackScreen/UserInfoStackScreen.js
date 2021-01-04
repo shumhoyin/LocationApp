@@ -21,6 +21,7 @@ import ConfirmPage from './ConfirmPage';
 import Login from './Login';
 import RegisterSuccessScreen from './RegisterSuccessScreen';
 import UserDetailScreen from './UserDetailScreen';
+import LoginSuccessScreen from './LoginSuccessScreen';
 
 const Stack = createStackNavigator();
 
@@ -31,11 +32,7 @@ export default function UserInfoStackScreen({navigation}) {
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="ConfirmPage" component={ConfirmPage} />
       <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen
-        name="RegisterSuccessScreen"
-        component={RegisterSuccessScreen}
-      />
-
+      <Stack.Screen name="RegisterSuccessScreen" component={RegisterSuccessScreen}/>
       <Stack.Screen name="UserDetailScreen" component={UserDetailScreen} />
     </Stack.Navigator>
   );

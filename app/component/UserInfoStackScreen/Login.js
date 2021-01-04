@@ -40,6 +40,7 @@ function Login(props) {
 
   const successCallback = () => {
     console.log('123 success');
+
     props.navigation.navigate('Map');
   };
 
