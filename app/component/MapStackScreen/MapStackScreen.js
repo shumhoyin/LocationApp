@@ -17,6 +17,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import MapScreen from './MapScreen';
 import DetailScreen from './DetailScren';
+import CommentScreen from './CommentScreen';
+import GiveCommentSuccess from './GiveCommentSuccess';
 const Stack = createStackNavigator();
 
 export default function MapStackScreen({navigation}) {
@@ -24,6 +26,9 @@ export default function MapStackScreen({navigation}) {
     <Stack.Navigator>
       <Stack.Screen name="MapScreen" component={MapScreen} />
       <Stack.Screen name="DetailScreen" component={DetailScreen} />
+      <Stack.Screen name="CommentScreen" component={CommentScreen} />
+      <Stack.Screen name="GiveCommentSuccess" component={GiveCommentSuccess} />
+
     </Stack.Navigator>
   );
 }
