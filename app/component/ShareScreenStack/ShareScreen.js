@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   LocationDesciption: {},
 });
 
-function ShareScreen() {
+function ShareScreen({navigation}) {
   const data = useSelector(state =>state.user.user);
   const dispatch = useDispatch();
 
@@ -98,10 +98,12 @@ function ShareScreen() {
     axios.post('http://localhost:3001/api/Location/ShareLocation',LocationInfo)
         .then(res=>{
           console.log(res.data);
+          navigation.navigate('ShareSuccessScreen')
         })
         .catch(err=>{
           console.log(err.message);
         })
+
   }
 
   return (

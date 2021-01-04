@@ -15,8 +15,10 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
+
 import ShareScreen from './ShareScreen';
 import ChooseLocation from './ChooseLocation';
+import ShareSuccessScreen from './ShareSuccessScreen';
 const Stack = createStackNavigator();
 
 export default function ShareLocationStackScreen({navigation}) {
@@ -24,6 +26,8 @@ export default function ShareLocationStackScreen({navigation}) {
     <Stack.Navigator>
       <Stack.Screen name="Share" component={ShareScreen} />
       <Stack.Screen name="ChooseLocation" component={ChooseLocation} />
+      <Stack.Screen name="ShareSuccessScreen" component={ShareSuccessScreen} />
+
     </Stack.Navigator>
   );
 }

@@ -1,23 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
-  Dimensions,
   Image,
   TextInput,
   Alert,
   TouchableOpacity,
 } from 'react-native';
 import 'react-native-gesture-handler';
-import {connect} from 'react-redux';
-import axios from 'axios';
-import {registerUserRequest} from '../../redux';
-var {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   UserIcon: {
@@ -28,14 +20,16 @@ const styles = StyleSheet.create({
   },
 });
 
-function RegisterSuccessScreen() {
+function RegisterSuccessScreen({navigation}) {
   return (
     <View style={{flex: 1}}>
       <View style={{flex: 3, backgroundColor: 'steelblue'}}>
-        <Text>Success</Text>
+        <Text>Register Success</Text>
         <View>
           {/*doing validation */}
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => {
+          navigation.navigate('Login');
+          }}>
             <Text
               style={{
                 fontSize: 20,
