@@ -127,40 +127,9 @@ function MapScreen({navigation}) {
   let mapAnimaton = new Animated.Value(0);
 
   //sample data fo marker
-  const [coordinates, setCooordinates] = useState([
-    {
-      title: 'Burger',
-      latitude: 37.8025259,
-      longitude: -122.4351431,
-      image: require('../../assets/images/samplephoto/testphoto1.jpg'),
-    },
-    {
-      title: 'Pizza',
-      latitude: 37.7946386,
-      longitude: -122.421646,
-      image: require('../../assets/images/samplephoto/testphoto2.jpg'),
-    },
-    {
-      title: 'Soup',
-      latitude: 37.7665948,
-      longitude: -122.4165628,
-      image: require('../../assets/images/samplephoto/testphoto3.jpg'),
-    },
-    {
-      title: 'Sushi',
-      latitude: 37.7834153,
-      longitude: -122.4527787,
-      image: require('../../assets/images/samplephoto/testphoto4.jpg'),
-    },
-    {
-      title: 'Curry',
-      latitude: 37.79489,
-      longitude: -122.4596065,
-      image: require('../../assets/images/samplephoto/testphoto5.jpg'),
-    },
-  ]);
+  const [coordinates, setCooordinates] = useState([]);
 
-  //when the apps start, it will happen (conponent did mounted)
+  //when the apps start, it will happen
   //run first times only
   useEffect(() => {
     Geolocation.getCurrentPosition(
@@ -226,6 +195,7 @@ function MapScreen({navigation}) {
     axios.get('http://localhost:3001/api/Location/GetAll')
         .then(res=>{
           console.log(res.data.payload);
+          setCooordinates(res.data.payload)
         })
         .catch(err=>{
           console.log(err.message);
@@ -234,14 +204,17 @@ function MapScreen({navigation}) {
 
   return (
     <View>
+
+      {/*for loading spinner*/}
+ {/*     <View
+      style={{position:'absolute',height:'100%',width:'100%',backgroundColor:'#000000AA',zIndex:1,justifyContent:'center',alignItem:'center'}}>
+      </View>*/}
       <MapView
         style={styles.map}
         showsUserLocation={true}
-        followsUserLocation={true}
+        followsUserLocation={false}
         region={region}
-        // onRegionChange={
-        //     (region)=>console.log(region)
-        // }
+        //add a initalregion
         onPress={(e) => {
           console.log(e.nativeEvent.coordinate);
         }}
@@ -259,7 +232,7 @@ function MapScreen({navigation}) {
             <Marker
               key={index}
               coordinate={{latitude: item.latitude, longitude: item.longitude}}
-              title={item.title}
+              title={item.locationName}
               onPress={(e) => onMarkerPress(e)}>
               <Animated.View style={[styles.markerWrap]}>
                 <Animated.Image
@@ -270,7 +243,8 @@ function MapScreen({navigation}) {
               </Animated.View>
             </Marker>
           );
-        })}
+        })
+        }
       </MapView>
 
       <View style={styles.searchBox}>
@@ -318,13 +292,13 @@ function MapScreen({navigation}) {
             coordinates.map((item, idx) => (
             <View style={styles.card} key={idx}>
               <Image
-                source={item.image}
+                source={{uri: item.image}}
                 style={styles.cardImage}
                 resizeMode="cover"
               />
               <View>
                 <Text numberOfLines={1} style={styles.cardtitle}>
-                  {item.title}
+                  {item.locationName}
                 </Text>
                 <Text nubmerOfLines={1} style={styles.cardDescription}>
                   Latitude:{item.latitude}
@@ -336,7 +310,7 @@ function MapScreen({navigation}) {
                   <TouchableOpacity
                     style={styles.signIn}
                     onPress={() => {
-                      navigation.navigate('DetailScreen', {name: 'test'});
+                      navigation.navigate('DetailScreen',{detailId:item.locationDetail});
                     }}>
                     <Text style={styles.textSign}> Understand more </Text>
                   </TouchableOpacity>
