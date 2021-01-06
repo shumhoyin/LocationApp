@@ -17,6 +17,7 @@ import 'react-native-gesture-handler';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
+import LoadingSpinner from '../LoadingSpinner';
 
 var {height, width} = Dimensions.get('window');
 
@@ -123,6 +124,8 @@ function MapScreen({navigation}) {
     longitudeDelta: 0.0521,
   });
 
+  const [isLoading, setLoading] = useState(false);
+
   const mapIndex = 0;
   let mapAnimaton = new Animated.Value(0);
 
@@ -191,9 +194,11 @@ function MapScreen({navigation}) {
   const _scrollView = useRef(null);
 
   const testSubmit =() =>{
+    setLoading(true);
     console.log('inside search');
     axios.get('http://localhost:3001/api/Location/GetAll')
         .then(res=>{
+          setLoading(false);
           console.log(res.data.payload);
           setCooordinates(res.data.payload)
         })
@@ -205,10 +210,16 @@ function MapScreen({navigation}) {
   return (
     <View>
 
+      {
+        isLoading ?
+            <View
+            style={{position:'absolute',height:'100%',width:'100%',zIndex:1}}>
+          <LoadingSpinner />
+        </View>:
+            <View/>
+      }
       {/*for loading spinner*/}
- {/*     <View
-      style={{position:'absolute',height:'100%',width:'100%',backgroundColor:'#000000AA',zIndex:1,justifyContent:'center',alignItem:'center'}}>
-      </View>*/}
+
       <MapView
         style={styles.map}
         showsUserLocation={true}
@@ -310,7 +321,8 @@ function MapScreen({navigation}) {
                   <TouchableOpacity
                     style={styles.signIn}
                     onPress={() => {
-                      navigation.navigate('DetailScreen',{detailId:item.locationDetail});
+                      //should be location id
+                      navigation.navigate('DetailScreen',{LocationId:item._id,detailId:item.locationDetail});
                     }}>
                     <Text style={styles.textSign}> Understand more </Text>
                   </TouchableOpacity>
