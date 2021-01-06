@@ -18,6 +18,7 @@ import {connect,useDispatch,useSelector} from 'react-redux';
 import axios from 'axios';
 import {logoutUserRequest} from '../../redux';
 var {height, width} = Dimensions.get('window');
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   UserIcon: {
@@ -28,9 +29,17 @@ const styles = StyleSheet.create({
   },
 });
 
+
+
 function UserDetailScreen() {
   const data = useSelector(state=>state.user.user)
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+    const successCallback = ()=>{
+        navigation.navigate('DetailScreen')
+    }
+
   return (
     <View>
         <SafeAreaView>
@@ -39,7 +48,7 @@ function UserDetailScreen() {
         <Text>UserFirstName = {data.firstName}</Text>
         <Text>UserLastName = {data.lastName}</Text>
         <Text>Email = {data.email}</Text>
-        <TouchableOpacity onPress={()=>dispatch(logoutUserRequest())}>
+        <TouchableOpacity onPress={()=>dispatch(logoutUserRequest(successCallback))}>
           <Text>LOGOUT</Text>
         </TouchableOpacity>
         </SafeAreaView>

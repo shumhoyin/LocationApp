@@ -66,8 +66,16 @@ export const loginUserRequest = (UserObj, successCallback, FailureCallback) => {
   };
 };
 
-export const logoutUserRequest = () => {
-  return {
-    type: LOGOUT_USER_REQUEST,
-  };
+export const logoutUserRequest = (successCallback) => {
+
+
+
+    if (typeof successCallback === 'function') {
+      successCallback();
+    }
+    return {
+      type: LOGOUT_USER_REQUEST,
+    };
+
+
 };

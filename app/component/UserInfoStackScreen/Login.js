@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
 
 function Login(props) {
   const [UserObj, setUserObj] = useState({userName: '', userPassword: ''});
+  const [isSecure, setisSecure] = useState(true);
 
   const successCallback = () => {
     console.log('123 success');
@@ -60,7 +61,7 @@ function Login(props) {
         <Text stykle={{marginBottom: 20}}>{UserObj.userName}</Text>
 
         <Text>Password :</Text>
-        <TextInput
+        <TextInput secureTextEntry={isSecure}
           style={{height: 40, borderColor: 'black', borderWidth: 1}}
           onChangeText={(text) => setUserObj({...UserObj, userPassword: text})}
           value={UserObj.userPassword}
