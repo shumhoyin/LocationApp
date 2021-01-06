@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   TextInput,
   SafeAreaView,
@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import 'react-native-gesture-handler';
 import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useFocusEffect} from '@react-navigation/native';
 import axios from 'axios'
 import {useSelector,useDispatch} from 'react-redux';
 
@@ -63,22 +63,21 @@ function CommentScreen(props) {
   const data = useSelector(state =>state.user.user);
 
   const [content, setContent] = React.useState({
-    uploadedBy:data._id,
+    uploadedBy:'',
     data:'',
     detailId:props.route.params.detailId,
   });
 
-useEffect(()=>{
-  //call api
-  console.log(props.route.params)
-  return
-      console.log('component killed')
-
-},[])
-
   const SuccessCallback =()=>{
-    props.navigation.navigate('GiveCommentSuccess',props.route.params)
+    props.navigation.navigate('GiveCommentSuccess')
   }
+
+  useFocusEffect(
+      useCallback(() => {
+        setContent({...content,uploadedBy:data._id})
+        return () => console.log("exit comment screen");
+      }, [])
+  );
 
   const submitComment =()=>{
   console.log(content)
