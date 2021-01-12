@@ -16,7 +16,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import MapScreen from './MapScreen';
-import DetailScreen from './DetailScren';
+import DetailScreen from './DetailScreen';
 import CommentScreen from './CommentScreen';
 import GiveCommentSuccess from './GiveCommentSuccess';
 const Stack = createStackNavigator();

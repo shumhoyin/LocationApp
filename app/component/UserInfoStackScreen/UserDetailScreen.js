@@ -37,7 +37,7 @@ function UserDetailScreen() {
   const navigation = useNavigation();
 
     const successCallback = ()=>{
-        navigation.navigate('DetailScreen')
+        navigation.navigate('Map')
     }
 
   return (
