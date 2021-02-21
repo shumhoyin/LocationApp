@@ -14,7 +14,6 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import 'react-native-gesture-handler';
-import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer, useFocusEffect} from '@react-navigation/native';
 import axios from 'axios'
 import {useSelector,useDispatch} from 'react-redux';

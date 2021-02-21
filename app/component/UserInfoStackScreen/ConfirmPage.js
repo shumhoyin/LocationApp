@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import 'react-native-gesture-handler';
 import {connect} from 'react-redux';
-import axios from 'axios';
 import {registerUserRequest} from '../../redux';
 var {height, width} = Dimensions.get('window');
 

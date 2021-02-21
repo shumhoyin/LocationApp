@@ -1,95 +1,141 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
   Dimensions,
-  Image,
-  TextInput,
-  Alert,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native';
 import 'react-native-gesture-handler';
-var {height, width} = Dimensions.get('window');
-import {connect} from 'react-redux';
-import {loginUserRequest} from '../../redux';
+import {loginUserRequest, logoutUserRequest} from '../../redux';
+import InputBox from './component/InputBox';
+import {useSelector, useDispatch} from 'react-redux';
+import LoadingSpinner from '../LoadingSpinner';
 
 const styles = StyleSheet.create({
-  UserIcon: {
-    width: 150,
-    height: 150,
-    position: 'absolute',
-    margin: 7,
+  Container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    paddingTop: 50,
+  },
+  login: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });
 
-function Login(props) {
+function Login({navigation}) {
   const [UserObj, setUserObj] = useState({userName: '', userPassword: ''});
-  const [isSecure, setisSecure] = useState(true);
+  const [isEmpty, setIsEmpty] = useState({
+    userName: false,
+    userPassword: false,
+  });
+  const [isLoading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const successCallback = () => {
-    console.log('123 success');
-
-    props.navigation.navigate('Map');
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    setTimeout(() => {
+      navigation.navigate('Map');
+    }, 2000);
   };
 
-  const FailureCallback = () => {
-    console.log('123 failure');
+  const FailureCallback = (msg) => {
+    setTimeout(() => {
+      setLoading(false);
+      alert(msg);
+    }, 1000);
   };
 
   return (
-    <View style={{flex: 1}}>
-      <View style={{flex: 3, backgroundColor: 'steelblue'}}>
+    <KeyboardAvoidingView style={{flex: 1}}>
+      {isLoading ? (
+        <View
+          style={{
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+            zIndex: 1,
+          }}>
+          <LoadingSpinner />
+        </View>
+      ) : (
+        <View />
+      )}
+      <View style={{...styles.Container, backgroundColor: 'steelblue'}}>
+        <Text style={{fontSize: 40}}>Login</Text>
         <Text>UserName :</Text>
-        <TextInput
-          style={{height: 40, borderColor: 'black', borderWidth: 1}}
-          onChangeText={(text) => setUserObj({...UserObj, userName: text})}
-          value={UserObj.userName}
+        <InputBox
+          iconType="user"
+          type="text"
+          DisplayValue={UserObj.userName}
+          onChangeText={(username) =>
+            setUserObj({...UserObj, userName: username})
+          }
+          isEmpty={isEmpty.userName}
         />
-        <Text stykle={{marginBottom: 20}}>{UserObj.userName}</Text>
 
         <Text>Password :</Text>
-        <TextInput secureTextEntry={isSecure}
-          style={{height: 40, borderColor: 'black', borderWidth: 1}}
-          onChangeText={(text) => setUserObj({...UserObj, userPassword: text})}
-          value={UserObj.userPassword}
+        <InputBox
+          iconType="lock"
+          type="password"
+          DisplayValue={UserObj.userPassword}
+          onChangeText={(password) =>
+            setUserObj({...UserObj, userPassword: password})
+          }
+          secureTextEntry={true}
+          isEmpty={isEmpty.userPassword}
         />
-        <Text>{UserObj.userPassword}</Text>
 
         {/*doing validation */}
         <TouchableOpacity
-          onPress={() =>
-            props.loginUserRequest(UserObj, successCallback, FailureCallback)
-          }>
+          style={{
+            marginTop: 10,
+            width: '100%',
+            height: Dimensions.get('window').height / 15,
+            padding: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 3,
+            backgroundColor: '#0000FF',
+          }}
+          onPress={() => {
+            if (UserObj.userName === '') {
+              alert('Please Enter Username !');
+              setIsEmpty({...isEmpty, userName: true});
+              return;
+            } else if (UserObj.userPassword === '') {
+              alert('Please Enter Password !');
+              setIsEmpty({...isEmpty, userPassword: true});
+              return;
+            } else {
+              setLoading(true);
+              setIsEmpty({
+                userName: false,
+                userPassword: false,
+              });
+
+              dispatch(
+                loginUserRequest(UserObj, successCallback, FailureCallback),
+              );
+            }
+          }}>
           <Text
             style={{
-              fontSize: 20,
+              fontSize: 18,
+              fontWeight: 'bold',
+              color: '#FFFFFF',
             }}>
-            Login
+            Sign In
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loginUserRequest: (UserObj, successCallback, FailureCallback) =>
-      dispatch(loginUserRequest(UserObj, successCallback, FailureCallback)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;

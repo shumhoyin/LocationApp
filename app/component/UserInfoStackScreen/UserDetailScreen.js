@@ -43,7 +43,6 @@ function UserDetailScreen() {
   return (
     <View>
         <SafeAreaView>
-
         <Text>UserName = {data.userName}</Text>
         <Text>UserFirstName = {data.firstName}</Text>
         <Text>UserLastName = {data.lastName}</Text>

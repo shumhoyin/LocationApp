@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.locationapp"
+        applicationId "com.locationapp2"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

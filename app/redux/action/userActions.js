@@ -46,30 +46,35 @@ const userLoginFailure = () => {
 
 export const loginUserRequest = (UserObj, successCallback, FailureCallback) => {
   return (dispatch) => {
-    console.log('inside return datement');
-    axios
-      .post('http://localhost:3001/api/User/GetUser', UserObj)
-      .then((response) => {
-        if (typeof successCallback === 'function') {
-          successCallback();
-        }
-        dispatch(storeUserLogin(response.data.payload));
-      })
-      .catch((error) => {
-        console.log(error.message);
+      console.log('inside return datement');
+      axios
+          .post('http://localhost:3001/api/User/GetUser', UserObj)
+          .then((response) => {
+                console.log(response.data)
+              if (response.data.resCode === 1) {
+                  if (typeof successCallback === 'function') {
+                      successCallback();
+                  }
+                  dispatch(storeUserLogin(response.data.payload));
+              } else if (response.data.resCode === 0) {
+                  if (typeof FailureCallback === 'function') {
+                      FailureCallback(response.data.payload);
+                  }
+                  dispatch(userLoginFailure());
+              }
+          })
+          .catch((error) => {
+              //cannot connect to database error
+              if (typeof FailureCallback === 'function') {
+                  FailureCallback("Database Connection Error");
+              }
+              dispatch(userLoginFailure());
+          })
+  }
 
-        if (typeof FailureCallback === 'function') {
-          FailureCallback();
-        }
-        dispatch(userLoginFailure());
-      });
-  };
 };
 
 export const logoutUserRequest = (successCallback) => {
-
-
-
     if (typeof successCallback === 'function') {
       successCallback();
     }

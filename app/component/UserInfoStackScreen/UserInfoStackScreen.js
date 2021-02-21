@@ -1,18 +1,5 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  Button,
-  Dimensions,
-} from 'react-native';
 import 'react-native-gesture-handler';
-import {createDrawerNavigator, useIsDrawerOpen} from '@react-navigation/drawer';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import LoginPage from './LoginPage';
@@ -21,7 +8,6 @@ import ConfirmPage from './ConfirmPage';
 import Login from './Login';
 import RegisterSuccessScreen from './RegisterSuccessScreen';
 import UserDetailScreen from './UserDetailScreen';
-import LoginSuccessScreen from './LoginSuccessScreen';
 
 const Stack = createStackNavigator();
 

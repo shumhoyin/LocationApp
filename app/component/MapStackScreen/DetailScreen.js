@@ -13,11 +13,10 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import 'react-native-gesture-handler';
-import StarImage from '../../assets/images/PlacesImage/star.png';
-import {Rating, AirbnbRating} from 'react-native-ratings';
 import {useSelector, useDispatch} from 'react-redux';
 import axios from 'axios';
 import {useFocusEffect} from '@react-navigation/native';
+import LoadingSpinner from '../LoadingSpinner';
 
 const styles = StyleSheet.create({
   ImageViewStyle: {
@@ -61,28 +60,27 @@ const styles = StyleSheet.create({
 function DetailScreen(props) {
   const data = useSelector((state) => state.user.user);
   const [detail, setDetail] = useState({});
-  const [locationId, setLocationId] = useState('');
+
+  //state for loading spinner
+  const [isLoading, setLoading] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
-      console.log(props.route.params);
+      setLoading(true);
       axios
         .get('http://localhost:3001/api/Location/GetDetail', {
           params: {LocationId: props.route.params.LocationId},
         })
         .then((res) => {
+          setLoading(false);
           setDetail(res.data.payload);
+          console.log(res.data.payload);
         });
 
       //clean up action
       return () => console.log('exit deatil screen');
     }, []),
   );
-  //
-  // useEffect(()=>{
-  //   console.log("hi");
-  //   return (console.log("bye"))
-  // },[detail])
 
   const needSignIn = () => {
     alert('Please Login to Give Comment');
@@ -106,8 +104,76 @@ function DetailScreen(props) {
       });
   };
 
+  const GiveLike = () => {
+    let reqBody = {
+      detailId: props.route.params.detailId,
+      user_id: data._id,
+    };
+    setLoading(true);
+    console.log(reqBody);
+    axios
+      .post('http://localhost:3001/api/Location/GiveLike', reqBody)
+      .then((res) => {
+        setLoading(false);
+        console.log(res.data.payload);
+        if (res.data.resCode === 0) {
+          alert(res.data.message);
+        } else {
+          setDetail({
+            ...detail,
+            locationDetail: {
+              ...detail.locationDetail,
+              like: res.data.payload.like,
+              dislike: res.data.payload.dislike,
+            },
+          });
+        }
+      });
+  };
+
+  const GiveDislike = () => {
+    let reqBody = {
+      detailId: props.route.params.detailId,
+      user_id: data._id,
+    };
+    setLoading(true);
+    axios
+      .post('http://localhost:3001/api/Location/GiveDislike', reqBody)
+      .then((res) => {
+        setLoading(false);
+        console.log(res.data.payload);
+        if (res.data.resCode === 0) {
+          alert(res.data.message);
+        } else {
+          setDetail({
+            ...detail,
+            locationDetail: {
+              ...detail.locationDetail,
+              like: res.data.payload.like,
+              dislike: res.data.payload.dislike,
+            },
+          });
+        }
+      });
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
+      {isLoading ? (
+        <View
+          style={{
+            position: 'absolute',
+            height: '100%',
+            width: '100%',
+            zIndex: 1,
+            backgroundColor: '#e0e0ebaa',
+          }}>
+          <LoadingSpinner />
+        </View>
+      ) : (
+        <View />
+      )}
+      {/*for loading spinner*/}
       <ScrollView>
         <View style={styles.ImageViewStyle}>
           <Image
@@ -129,6 +195,23 @@ function DetailScreen(props) {
           </TouchableHighlight>
         </View>
 
+        <View>
+          <TouchableHighlight onPress={() => GiveLike()}>
+            <View style={styles.CommentsButton}>
+              <Text>Thumbs Up !</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+
+
+          <TouchableHighlight onPress={() => GiveDislike()}>
+
+            <View style={styles.CommentsButton}>
+              <Text>Thumbs Down !</Text>
+            </View>
+          </TouchableHighlight>
+
+
         <View style={styles.ImageInfoStyle}>
           <Text style={{flex: 1, margin: 5, fontSize: 15}}>
             {' '}
@@ -149,16 +232,8 @@ function DetailScreen(props) {
             </Text>
           )}
 
-          {/*}*/}
-          {/*            <Rating
-              imageSize={40}
-              type="custom"
-              startingValue={3.3}
-              readonly={true}
-            />{' '}*/}
-
           {detail.uploadedBy && (
-            <Text style={{flex: 1, margin: 10, fontSize: 15}}>
+            <Text style={{flex: 1, margin: 5, fontSize: 15}}>
               {' '}
               Suggested By: {detail.uploadedBy.userName}{' '}
             </Text>

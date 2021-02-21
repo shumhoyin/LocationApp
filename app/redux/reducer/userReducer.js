@@ -19,7 +19,6 @@ const initialsState = {
 
 //define user reducer
 const userReducer = (state = initialsState, action) => {
-  console.log('1234' + action.payload);
   switch (action.type) {
     case REGISTER_USER_REQUEST:
       return {

@@ -1,20 +1,15 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
-  Dimensions,
   Image,
   Alert,
-  TouchableHighlight,
 } from 'react-native';
 import 'react-native-gesture-handler';
-import {Rating, AirbnbRating} from 'react-native-ratings';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -70,7 +65,9 @@ function FavouriteScreen(props) {
         })
         .then((res) => {
           setDetail(res.data.payload);
+          console.log(res.data.payload);
         });
+
       //clean up action
       return () => console.log('exit favourite screen');
     }, []),
@@ -79,19 +76,36 @@ function FavouriteScreen(props) {
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
-        {detail ? (
+        {detail && (
           detail.map((itm, idx) => {
             return (
-              <View>
-                <Text> {itm.locationName}</Text>
+              <View
+                key={idx}
+                style={{
+                  flexDirection: 'row',
+                  margin: 5,
+                  backgroundColor: '#FFFFFF',
+                }}>
+                <Image
+                  source={{uri: itm.image}}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    margin: 10,
+                  }}
+                />
+                <View style={{margin: 10}}>
+                  <Text>Name: {itm.locationName}</Text>
+                  <Text>Type: {itm.type}</Text>
+                  <Text>uploadedBy: {itm.uploadedBy.userName}</Text>
+                  <Text>Like: {itm.locationDetail.like}</Text>
+                  <Text>Dislike: {itm.locationDetail.dislike}</Text>
+                </View>
               </View>
             );
           })
-        ) : (
-          <View>
-            <Text>nothing</Text>
-          </View>
-        )}
+        )
+        }
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,124 +1,104 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
-  View,
   Text,
-  StatusBar,
-  Button,
   Dimensions,
   Image,
-  TextInput,
-  Alert,
   TouchableOpacity,
 } from 'react-native';
 import 'react-native-gesture-handler';
-var {height, width} = Dimensions.get('window');
 
-import Register from './Register';
+import FacebookButton from './component/FacebookButton';
+import GoogleButton from './component/GoogleButton';
+
+var {height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  UserIcon: {
-    width: 150,
-    height: 150,
-    position: 'absolute',
-    margin: 7,
-  },
+    container:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+        paddingTop: 50
+    },
+    logo: {
+        height: 150,
+        width: 150,
+        resizeMode: 'cover',
+    },
+    text: {
+        fontSize: 28,
+        marginBottom: 10,
+        color: '#051d5f',
+    },
+    navButton: {
+        marginTop: 25,
+    },
+    forgotButton: {
+        marginVertical: 35,
+    },
+    navButtonText: {
+        fontSize: 18,
+        fontWeight: '500',
+        color: '#2e64e5',
+    }
 });
 
 function LoginPage({navigation}) {
-  const [UserName, onUserNameChange] = useState(null);
-  const [Password, onPasswordChange] = useState(null);
-
   return (
-    <View style={{flex: 1}}>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: 'powderblue',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <View>
-          <Text style={{fontSize: 40}}>User Info</Text>
-        </View>
-      </View>
+      <SafeAreaView>
+          <ScrollView contentContainerStyle={styles.container}>
+              <Image
+                  source={require('../../assets/images/PlacesImage/fake_app_icon.png')}
+                  style={styles.logo}
+              />
+              <Text style={styles.text}>Find What You Want</Text>
+              <Text style={styles.text}>Share What You Want</Text>
+              <Text style={{
+                  fontSize: 18,
+                  fontWeight: '500',
+                  color: '#2e64e5',
+              marginTop: 40
+              }}>Already had an account ? </Text>
+              <TouchableOpacity style={{
+                  marginTop: 10,
+                  width: '100%',
+                  height: height/15,
+                  padding: 10,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 3,
+                  backgroundColor: '#0000FF',
+              }}
+              onPress={()=>navigation.navigate('Login')}>
+                  <Text style={{
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                      color: '#FFFFFF',
+                  }}>Sign In</Text>
+              </TouchableOpacity>
 
-      <View style={{flex: 1, alignItems: 'center'}}>
-        <Image
-          source={require('../../assets/images/UserInfo/default-user-icon.png')}
-          style={styles.UserIcon}
-        />
-      </View>
+              <TouchableOpacity style={styles.navButton} onPress={() => {}}>
+                  <Text style={{
+                      fontSize: 18,
+                      fontWeight: '500',
+                      color: '#2e64e5'}}>Forgot Password?</Text>
+              </TouchableOpacity>
+              <FacebookButton/>
+              <GoogleButton/>
 
-      {/*<View style={{flex: 3, backgroundColor: 'steelblue'}}>*/}
-      {/*  <Text>UserName :</Text>*/}
-      {/*  <TextInput*/}
-      {/*    style={{height: 40, borderColor: 'black', borderWidth: 1}}*/}
-      {/*    onChangeText={(text) => onUserNameChange(text)}*/}
-      {/*    value={UserName}*/}
-      {/*  />*/}
-      {/*  <Text stykle={{marginBottom: 20}}>{UserName}</Text>*/}
+              <TouchableOpacity
+                  style={styles.forgotButton}
+                  onPress={() => navigation.navigate('Register')}>
+                  <Text style={styles.navButtonText}>
+                      Don't have an acount? Create here
+                  </Text>
+              </TouchableOpacity>
 
-      {/*  <Text>Password :</Text>*/}
-      {/*  <TextInput*/}
-      {/*    style={{height: 40, borderColor: 'black', borderWidth: 1}}*/}
-      {/*    onChangeText={(text) => onPasswordChange(text)}*/}
-      {/*    value={Password}*/}
-      {/*  />*/}
-      {/*  <Text>{Password}</Text>*/}
 
-      <View>
-        <Text> Have an Account ? Login ! </Text>
-      </View>
-
-      <Button
-        title="Login"
-        color="#f194ff"
-        onPress={() => navigation.navigate('Login')}
-      />
-
-      <View
-        style={{
-          borderBottomColor: 'black',
-          borderBottomWidth: 4,
-          margin: 20,
-        }}
-      />
-
-      <View style={{alignItems: 'center'}}>
-        <Text>Do Not Have An Account ? Sign One !</Text>
-      </View>
-
-      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-        <Text
-          style={{
-            fontSize: 20,
-          }}>
-          Sign Up With Username and Password
-        </Text>
-      </TouchableOpacity>
-
-      <Button
-        title="Sign Up With Facebook"
-        color="#f194ff"
-        onPress={() => Alert.alert('This is a register button 2')}
-      />
-      <Button
-        title="Sign Up With Google"
-        color="#f194ff"
-        onPress={() => Alert.alert('This is a register button 3')}
-      />
-    </View>
+          </ScrollView>
+      </SafeAreaView>
   );
 }
 

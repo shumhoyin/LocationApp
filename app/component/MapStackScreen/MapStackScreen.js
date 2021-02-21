@@ -10,9 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import 'react-native-gesture-handler';
-import {createDrawerNavigator, useIsDrawerOpen} from '@react-navigation/drawer';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {NavigationContainer} from '@react-navigation/native';
+//import {createDrawerNavigator, useIsDrawerOpen} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import MapScreen from './MapScreen';
