@@ -5,6 +5,7 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAILURE,
   LOGOUT_USER_REQUEST,
+  CHANGE_USER_ICON,
 } from '../types/userTypes';
 
 const initialsState = {
@@ -38,6 +39,11 @@ const userReducer = (state = initialsState, action) => {
       return {
         ...state,
         user: null,
+      };
+    case CHANGE_USER_ICON:
+      return {
+        ...state,
+        user: action.payload,
       };
     default:
       return state;

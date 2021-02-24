@@ -4,7 +4,7 @@ import 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
 
 import store from './app/redux/store';
-import MainNavigation from './app/component/MainNavigation';
+import MainNavigation from './app/Screen/MainNavigation';
 
 
 const App: () => React$Node = () => {
